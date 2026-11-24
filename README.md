@@ -17,7 +17,7 @@ L'objectif est d'identifier les profils de clients les plus exposés au risque d
 - Identifier et traiter les valeurs manquantes.
 - Mesurer le taux global de résiliation.
 - Identifier les facteurs associés au churn.
-- Développer des modèles de Machine Learning.
+- Développer et comparer des modèles de Machine Learning.
 - Concevoir un tableau de bord interactif.
 - Formuler des recommandations métier.
 
@@ -26,10 +26,10 @@ L'objectif est d'identifier les profils de clients les plus exposés au risque d
 | Outil | Utilisation |
 |---|---|
 | Excel | Exploration des données et tableaux croisés dynamiques |
-| SQL | Nettoyage, requêtes et analyses statistiques |
-| Python / Pandas | Préparation et analyse exploratoire |
+| SQL | Contrôle qualité, requêtes et analyses statistiques |
+| Python / Pandas | Nettoyage, préparation et analyse exploratoire |
 | Machine Learning | Classification et prédiction du churn |
-| Power BI | Modélisation, DAX et visualisation interactive |
+| Power BI | Modélisation, mesures DAX et visualisation interactive |
 
 ## 4. Principaux résultats
 
@@ -45,7 +45,40 @@ L'analyse des 7 043 clients a permis d'identifier plusieurs facteurs associés �
 | Churn du paiement Electronic Check | 45,29 % |
 | Churn du service Fiber Optic | 41,89 % |
 
-Ces résultats mettent notamment en évidence une exposition plus importante des nouveaux clients et des clients disposant de contrats mensuels.
+### Qualité et préparation des données
+
+Le contrôle qualité a permis d'identifier 11 valeurs manquantes dans la colonne `TotalCharges`.
+
+Ces 11 observations correspondent à des clients ayant une ancienneté de zéro mois (`tenure = 0`).
+
+- Dans SQL, les 11 lignes ont été conservées afin de respecter les données d'origine.
+- Dans Python, les valeurs manquantes ont été remplacées par zéro, car ces nouveaux clients n'ont encore aucune facturation cumulée.
+
+Cette règle de traitement permet de conserver les observations sans supprimer inutilement des clients.
+
+### Résultats du Machine Learning
+
+Deux modèles de classification ont été entraînés et comparés afin de prédire le churn :
+
+- Régression logistique.
+- Random Forest.
+
+Les performances obtenues sur l'ensemble de test sont les suivantes :
+
+| Indicateur | Régression logistique | Random Forest |
+|---|---:|---:|
+| Accuracy | 79,28 % | 79,35 % |
+| Precision | 63,31 % | 64,46 % |
+| Recall | 52,14 % | 49,47 % |
+| F1-score | 57,18 % | 55,98 % |
+
+La régression logistique a été retenue comme modèle de référence.
+
+Bien que le Random Forest présente une Accuracy légèrement supérieure, la régression logistique obtient un meilleur Recall et un meilleur F1-score.
+
+Le Recall est particulièrement important dans cette problématique, car l'objectif est de détecter le maximum de clients susceptibles de résilier leur abonnement.
+
+Les performances restent perfectibles avant toute utilisation opérationnelle.
 
 ## 5. Recommandations métier
 
@@ -58,6 +91,8 @@ Ces résultats mettent notamment en évidence une exposition plus importante des
 - Renforcer l'accompagnement des clients les plus exposés.
 
 Les facteurs identifiés représentent des associations statistiques et ne démontrent pas nécessairement une relation de causalité.
+
+Une expérimentation comparative (A/B testing) pourrait permettre de mesurer l'efficacité réelle des actions de fidélisation proposées.
 
 ## 6. Organisation du portfolio
 
@@ -72,7 +107,9 @@ Les différents travaux sont organisés par outil :
 | [05 – Power BI](05_Power_BI/) | Tableau de bord interactif |
 | [Data](data/) | Données du projet |
 
-Le notebook Python est également disponible à la racine du dépôt : `telco_customer_churn.ipynb`.
+Le notebook Python est également disponible à la racine du dépôt :
+
+`telco_customer_churn.ipynb`
 
 ## 7. Démarche analytique
 
@@ -87,9 +124,11 @@ Le projet suit une démarche complète de Data Analyst :
 
 ## 8. Conclusion
 
-Ce projet m'a permis de mettre en pratique les différentes étapes d'un processus d'analyse de données, depuis la collecte et la préparation des données jusqu'à la modélisation prédictive et la visualisation des résultats.
+Ce projet m'a permis de mettre en pratique les différentes étapes d'un processus d'analyse de données, depuis l'exploration et la préparation des données jusqu'à la modélisation prédictive et la visualisation des résultats.
 
 Il illustre ma capacité à utiliser plusieurs outils complémentaires pour transformer les données en informations utiles à la compréhension des problématiques métier et à la prise de décision.
+
+Ce travail constitue une mise en pratique de mes compétences en Excel, SQL, Python, Machine Learning et Power BI dans le cadre d'une problématique réelle de fidélisation client.
 
 ---
 
